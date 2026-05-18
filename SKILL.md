@@ -29,6 +29,52 @@ Before running anything, fill these placeholders in your local copy or your agen
 
 All shell snippets below assume an [OpenClaw](https://openclaw.ai) browser CLI bound by CDP, but the doctrine works with any browser-automation stack (Playwright, Puppeteer, Chrome MCP). Swap the CLI calls for your own.
 
+### Quick config (copy-paste YAML)
+
+If your agent reads config from YAML, drop this in `<WORKSPACE_DIR>/config.yaml`:
+
+```yaml
+brand:
+  name: <BRAND_NAME>
+  domain: <BRAND_DOMAIN>
+
+x:
+  handle: <X_HANDLE>                 # e.g. "@AcmeStudio"
+  browser_profile: <BROWSER_PROFILE> # e.g. "x-live"
+  browser_port: <BROWSER_PORT>       # e.g. 9222
+
+discovery:
+  niche_keywords: <NICHE_KEYWORDS>   # e.g. "retrait permis OR contester amende"
+
+workspace:
+  dir: <WORKSPACE_DIR>               # e.g. "~/.openclaw/workspace/twitter-acme"
+
+alerts:
+  channel: telegram | slack | discord
+  webhook: <YOUR_WEBHOOK_URL>
+
+schedule:
+  timezone: Europe/Paris             # everything else is relative to this
+  windows:
+    morning_post:   "09:00"
+    noon_post:      "12:30"
+    evening_post:   "18:00"
+    reply_passes:   ["11:00", "15:00", "19:30"]
+    metrics_recap:  "21:30"
+```
+
+### Compatibility
+
+The skill is markdown — it works wherever an agent reads `SKILL.md`:
+
+| Stack | Skill install path |
+|---|---|
+| [Claude Code](https://claude.ai/code) | `~/.claude/skills/twitter-account-operations/` |
+| [OpenClaw](https://openclaw.ai) | `~/.openclaw/skills/twitter-account-operations/` |
+| ClawHub-published | one-click install via [clawhub.ai](https://clawhub.ai/alexbloch-ia/twitter-account-operations) |
+| Cursor / Copilot CLI | drop `SKILL.md` into your project's `.cursorrules` or `AGENTS.md` |
+| Any LLM agent reading markdown rules | concatenate `SKILL.md` into your system prompt |
+
 ---
 
 ## 1. Browser architecture
@@ -496,3 +542,88 @@ Leave the browser cleaner than you found it.
 `tw-stealth` = maintain quietly.
 
 **Stability matters more than speed.**
+
+---
+
+## 7. First-run checklist
+
+Before enabling any cron, run through this checklist:
+
+- [ ] Section 0 placeholders filled in your local copy / agent memory.
+- [ ] X account profile bio is brand-aligned but not aggressively promotional.
+- [ ] Browser profile launched at `http://127.0.0.1:<BROWSER_PORT>` and logged in.
+- [ ] Loading `https://x.com/notifications` from your profile renders the feed (= session OK).
+- [ ] `<WORKSPACE_DIR>/memory/` directory exists with the memory files used by your crons (post log, reply log, ideas, learnings, recaps).
+- [ ] Alert channel (Telegram / Slack / Discord) webhook tested with a "hello" message.
+- [ ] At least 1 week of manual posting before letting automation drive the account — establishes a baseline tone and avoids day-1 algorithmic flags.
+
+A bash one-liner to init the memory files:
+
+```bash
+mkdir -p "<WORKSPACE_DIR>/memory" && cd "$_" && touch x-recaps.md x-post-log.md x-reply-log.md x-ideas.md x-learnings.md x-metrics-log.md
+```
+
+(The GitHub repo ships an `init-memory.sh` script that does the same interactively.)
+
+---
+
+## 8. Reply skeletons (drop-in templates)
+
+These are *skeletons*, not finished replies — fill the brackets, then humanize.
+
+### Skeleton A — Answer-first (most replies)
+
+```
+[Direct answer in 1 sentence, no hedging].
+
+[1-2 sentences of reasoning or the underlying rule].
+
+[Optional: 1 concrete next step the OP can take themselves].
+```
+
+### Skeleton B — Empathy + redirect (sensitive topic)
+
+```
+That's a tough spot.
+
+[1 sentence that validates without overclaiming "I know what you're going through"].
+
+The general framework here is [...]. A specialist in [...] can review your specific situation.
+```
+
+### Skeleton C — Correction (politely)
+
+```
+Small precision: [the corrected fact, sourced if possible].
+
+[Why it matters in 1 sentence].
+
+(Not blaming OP — common confusion).
+```
+
+### What to never paste verbatim
+
+- Anything with `[bracket]` placeholders still in it (final read-through is mandatory).
+- The exact same skeleton more than twice in a 7-day window — vary the structure.
+
+---
+
+## 9. FAQ
+
+**Q: Do I need OpenClaw to use this skill?**
+A: No. OpenClaw browser CLI is the example stack — the doctrine works with Playwright, Puppeteer, Chrome MCP, or any CDP-capable tool. Swap the CLI calls.
+
+**Q: Can I use this skill for multiple X accounts?**
+A: Yes — clone the workspace dir per account. Each account gets its own `memory/` and its own browser profile. Use a different `<BROWSER_PORT>` per account so they don't collide.
+
+**Q: How does this interact with X API rate limits?**
+A: The skill is browser-driven, not API-driven — you're not consuming X API quota. You are, however, subject to X's behavioral throttling on the UI side, which is exactly why the doctrine caps actions per role and per minute.
+
+**Q: Should I post threads or single tweets?**
+A: Default to single tweets. Run a thread once per week max (Tue or Fri) when you have actual depth worth a thread. Threads-for-the-sake-of-threads get under-engaged.
+
+**Q: What about X Premium / Blue / verification?**
+A: Orthogonal. The doctrine doesn't change. Verified accounts get slightly more leeway on rate limits but also more visibility for any misstep — so the discipline matters more, not less.
+
+**Q: What if X bans/suspends my account?**
+A: Stop everything. Do not appeal automatically. Manual review only. Document the suspension in `x-learnings.md` with the exact last 5 actions before suspension.
