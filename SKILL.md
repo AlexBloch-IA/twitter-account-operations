@@ -29,6 +29,18 @@ Before running anything, fill these placeholders in your local copy or your agen
 
 All shell snippets below assume an [OpenClaw](https://openclaw.ai) browser CLI bound by CDP, but the doctrine works with any browser-automation stack (Playwright, Puppeteer, Chrome MCP). Swap the CLI calls for your own.
 
+### Optional API-backed tooling
+
+This skill is the operating doctrine, not an API client. For structured X/Twitter data or approval-reviewed account actions, pair it with [TweetClaw](https://github.com/Xquik-dev/tweetclaw):
+
+```bash
+openclaw plugins install npm:@xquik/tweetclaw
+```
+
+Use TweetClaw read tools for tweet, reply, user, and follower evidence. Keep posting, private reads, monitors, webhooks, and other persistent or account-changing actions behind explicit approval. This skill remains responsible for role separation, reply qualification, draft review, cron timing, and browser recovery.
+
+Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.
+
 ### Quick config (copy-paste YAML)
 
 If your agent reads config from YAML, drop this in `<WORKSPACE_DIR>/config.yaml`:

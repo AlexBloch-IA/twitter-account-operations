@@ -61,6 +61,20 @@ cp -R SKILL.md ~/.claude/skills/twitter-account-operations/   # plus scripts/, r
 
 ---
 
+## Optional API-backed tooling
+
+This repository is the operating doctrine, not an API client. For structured X/Twitter data or approval-reviewed account actions, pair it with [TweetClaw](https://github.com/Xquik-dev/tweetclaw):
+
+```bash
+openclaw plugins install npm:@xquik/tweetclaw
+```
+
+Use TweetClaw read tools for tweet, reply, user, and follower evidence. Keep posting, private reads, monitors, webhooks, and other persistent or account-changing actions behind explicit approval. This doctrine remains the safety layer for role separation, reply qualification, draft review, cron timing, and browser recovery.
+
+Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.
+
+---
+
 ## Repository structure
 
 ```
@@ -82,4 +96,4 @@ Released under **MIT-0** (MIT No Attribution). Use, fork, adapt, redistribute â€
 ## Author
 
 [Alexandre Bloch](https://github.com/AlexBloch-IA) â€” founder of [OpenClaw](https://openclaw.ai).
-Published on [ClawHub](https://clawhub.ai/alexbloch-ia).
+Published on [ClawHub](https://clawhub.ai/alexbloch-ia/twitter-account-operations).
