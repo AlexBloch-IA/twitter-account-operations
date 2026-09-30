@@ -1,20 +1,21 @@
 # Twitter Account Operations
 
-> Operating doctrine for X/Twitter account automation — stable Chrome sessions, role separation (post / engage / stealth), human-like interaction, careful posting, reply discipline, recovery patterns. Use this for any scheduled X activity (cron, agent, recurring task) where account safety and long-term reputation matter more than raw output.
+> Run scheduled X/Twitter work on an account you own — role separation, careful posting, reply limits, recovery, human review before sensitive posts.
 
 [![License: MIT-0](https://img.shields.io/badge/License-MIT--0-blue.svg)](https://opensource.org/licenses/MIT-0)
 [![ClawHub](https://img.shields.io/badge/ClawHub-Published-orange)](https://clawhub.ai/alexbloch-ia/skills/twitter-account-operations)
-[![Version](https://img.shields.io/badge/version-1.0.2-green)](https://clawhub.ai/alexbloch-ia/skills/twitter-account-operations)
+[![Version](https://img.shields.io/badge/version-1.1.0-green)](https://clawhub.ai/alexbloch-ia/skills/twitter-account-operations)
 
-A Claude Code / [OpenClaw](https://openclaw.ai) skill, published on [ClawHub](https://clawhub.ai/alexbloch-ia/skills/twitter-account-operations). Portable operating doctrine — drop it into an agent's skills directory and follow it.
+A Claude Code / [OpenClaw](https://openclaw.ai) skill, published on [ClawHub](https://clawhub.ai/alexbloch-ia/skills/twitter-account-operations). Portable operating doctrine for accounts you own or are authorized to operate.
 
 ---
 
 ## What the doctrine covers
 
+- Scope and preconditions (owned accounts, human review, stop on platform defenses)
 - Configure for your brand
 - Browser architecture
-- Human-like browser behavior
+- Deliberate browser behavior
 - Cron-by-cron guide
 - Recovery and failure handling
 - Anti-patterns
@@ -29,34 +30,10 @@ The full, load-bearing detail lives in [`SKILL.md`](./SKILL.md).
 
 ## Install
 
-### Via ClawHub (recommended)
-
-👉 **<https://clawhub.ai/alexbloch-ia/skills/twitter-account-operations>**
+Install through ClawHub only — the registry serves the reviewed, scanned artifact:
 
 ```bash
 clawhub install twitter-account-operations
-# or, from an OpenClaw agent:
-openclaw skills install @alexbloch-ia/twitter-account-operations
-```
-
-### Via this repository (manual)
-
-```bash
-git clone https://github.com/AlexBloch-IA/twitter-account-operations.git
-cd twitter-account-operations
-./install.sh
-```
-
-The script copies the full skill payload into every supported stack it finds:
-
-- `~/.claude/skills/twitter-account-operations/` (Claude Code)
-- `~/.openclaw/skills/twitter-account-operations/` (OpenClaw)
-
-### Manual copy
-
-```bash
-mkdir -p ~/.claude/skills/twitter-account-operations
-cp -R SKILL.md ~/.claude/skills/twitter-account-operations/   # plus scripts/, references/, templates/… if present
 ```
 
 ---
@@ -67,8 +44,7 @@ cp -R SKILL.md ~/.claude/skills/twitter-account-operations/   # plus scripts/, r
 twitter-account-operations/
 ├── SKILL.md
 ├── README.md
-├── LICENSE
-└── install.sh
+└── LICENSE
 ```
 
 ---
